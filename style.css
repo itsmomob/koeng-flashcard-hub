@@ -1,0 +1,81 @@
+:root {
+    --primary: #52796f;
+    --primary-hover: #354f52;
+    --success: #606c38;
+    --error: #bc6c25;
+    --bg: #2f3e46;
+    --surface: #354f52;
+    --surface-hover: #52796f;
+    --text: #fefae0;
+    --text-light: #cad2c5;
+    --border: #52796f;
+    --radius: 16px;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 550px;
+    animation: fadeIn 0.4s ease-out;
+    box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    text-align: center;
+    color: var(--text);
+    font-weight: 700;
+    margin-bottom: 2px;
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+}
+
+button.action-btn, button.nav-btn, button.secondary-btn {
+    padding: 12px 18px;
+    border: none;
+    background-color: var(--primary);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    font-family: inherit;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+button.action-btn:hover, button.nav-btn:hover, button.secondary-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+button.action-btn:active, button.nav-btn:active, button.secondary-btn:active {
+    transform: scale(0.98);
+}
