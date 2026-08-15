@@ -97,34 +97,52 @@
         }
 
         function updateCard() {
-            isAnsweredCorrectly = false;
-            if (currentCards.length === 0) return;
-            const cardData = currentCards[currentIndex];
-            const frontElem = document.getElementById('cardFront');
-            const backElem = document.getElementById('cardBack');
-            const exampleElem = document.getElementById('cardExample');
-            const containerElem = document.querySelector('.flashcard-container');
-            
-            containerElem.classList.remove('flipped');
-            
-            document.getElementById('userAnswer').value = '';
-            document.getElementById('feedbackMessage').textContent = '';
-            document.getElementById('feedbackMessage').className = 'feedback';
-            document.getElementById('verifyBtn').textContent = 'Verify';
+    isAnsweredCorrectly = false;
+    if (currentCards.length === 0) return;
 
-            if (isKoreanToEnglish) {
-                frontElem.textContent = cardData.ko;
-                backElem.textContent = cardData.en;
-            } else {
-                frontElem.textContent = cardData.en;
-                backElem.textContent = cardData.ko;
-            }
-            
-            exampleElem.textContent = "Example: " + cardData.ex;
-            
-            document.getElementById('progressIndicator').textContent = 
-                `${currentIndex + 1} / ${currentCards.length}`;
-        }
+    const containerElem = document.querySelector('.flashcard-container');
+    const frontElem = document.getElementById('cardFront');
+    const backElem = document.getElementById('cardBack');
+    const exampleElem = document.getElementById('cardExample');
+    
+    // Reset inputs and feedback immediately
+    document.getElementById('userAnswer').value = '';
+    document.getElementById('feedbackMessage').textContent = '';
+    document.getElementById('feedbackMessage').className = 'feedback';
+    document.getElementById('verifyBtn').textContent = 'Verify';
+
+    // If card was flipped, unflip it first before swapping content
+    if (containerElem.classList.contains('flipped')) {
+        containerElem.classList.remove('flipped');
+        
+        // Delay content update slightly so text doesn't swap while visible during 3D flip
+        setTimeout(() => {
+            applyCardData();
+        }, 150);
+    } else {
+        applyCardData();
+    }
+}
+
+function applyCardData() {
+    const cardData = currentCards[currentIndex];
+    const frontElem = document.getElementById('cardFront');
+    const backElem = document.getElementById('cardBack');
+    const exampleElem = document.getElementById('cardExample');
+
+    if (isKoreanToEnglish) {
+        frontElem.textContent = cardData.ko;
+        backElem.textContent = cardData.en;
+    } else {
+        frontElem.textContent = cardData.en;
+        backElem.textContent = cardData.ko;
+    }
+    
+    exampleElem.textContent = "Example: " + cardData.ex;
+    
+    document.getElementById('progressIndicator').textContent = 
+        `${currentIndex + 1} / ${currentCards.length}`;
+}
 
         function flipCard() {
             const containerElem = document.querySelector('.flashcard-container');
