@@ -3,24 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice - Korean Flashcard Hub</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Practice - Korean Mastery Hub</title>
+    <style>
+        :root {
+            --primary: #52796f;
+            --bg: #2f3e46;
+            --surface: #354f52;
+            --border: #52796f;
+            --text: #fefae0;
+            --text-light: #cad2c5;
+            --radius: 16px;
+        }
+        body { font-family: sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 500px; }
+        .back-link { color: var(--text-light); text-decoration: none; display: block; margin-bottom: 20px; }
+        
+        .flashcard-container { perspective: 1000px; width: 100%; height: 300px; cursor: pointer; }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flashcard-container.flipped .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        .card-back { transform: rotateY(180deg); }
+        
+        .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+        .btn { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <div class="container practice-container">
-        <header class="practice-header">
-            <a href="index.html" class="back-link">← Back to Hub</a>
-            <h2 id="topic-title">Loading...</h2>
-        </header>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Hub</a>
+        <h2 id="topic-title">Loading...</h2>
 
         <div class="flashcard-container" id="flashcard">
             <div class="card-inner">
                 <div class="card-front">
-                    <span class="card-label">Korean</span>
                     <h3 id="ko-text">-</h3>
                 </div>
                 <div class="card-back">
-                    <span class="card-label">English & Example</span>
                     <h3 id="en-text">-</h3>
                     <p id="ex-text">-</p>
                 </div>
@@ -34,7 +52,6 @@
         </div>
     </div>
 
-    <!-- Load all data files -->
     <script src="data/summer.js"></script>
     <script src="data/mbti.js"></script>
     <script src="data/business.js"></script>
@@ -53,56 +70,26 @@
         const urlParams = new URLSearchParams(window.location.search);
         const topicKey = urlParams.get('topic') || 'summer';
         const currentTopic = topicMap[topicKey] || topicMap.summer;
-
+        
         document.getElementById('topic-title').innerText = currentTopic.name;
-
         let currentIndex = 0;
         const dataset = currentTopic.data;
-
         const flashcard = document.getElementById('flashcard');
-        const koText = document.getElementById('ko-text');
-        const enText = document.getElementById('en-text');
-        const exText = document.getElementById('ex-text');
-        const counter = document.getElementById('counter');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
 
         function loadCard(index) {
-            if (dataset.length === 0) {
-                koText.innerText = "No data found";
-                enText.innerText = "Please check dataset script.";
-                exText.innerText = "";
-                counter.innerText = "0 / 0";
-                return;
-            }
             const item = dataset[index];
-            koText.innerText = item.ko;
-            enText.innerText = item.en;
-            exText.innerText = item.ex;
-            counter.innerText = `${index + 1} / ${dataset.length}`;
+            document.getElementById('ko-text').innerText = item.ko;
+            document.getElementById('en-text').innerText = item.en;
+            document.getElementById('ex-text').innerText = item.ex;
+            document.getElementById('counter').innerText = `${index + 1} / ${dataset.length}`;
             flashcard.classList.remove('flipped');
         }
 
-        flashcard.addEventListener('click', () => {
-            flashcard.classList.toggle('flipped');
-        });
+        flashcard.addEventListener('click', () => flashcard.classList.toggle('flipped'));
+        document.getElementById('prev-btn').addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex - 1 + dataset.length) % dataset.length; loadCard(currentIndex); });
+        document.getElementById('next-btn').addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex + 1) % dataset.length; loadCard(currentIndex); });
 
-        prevBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (dataset.length === 0) return;
-            currentIndex = (currentIndex - 1 + dataset.length) % dataset.length;
-            loadCard(currentIndex);
-        });
-
-        nextBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (dataset.length === 0) return;
-            currentIndex = (currentIndex + 1) % dataset.length;
-            loadCard(currentIndex);
-        });
-
-        // Initialize first card
-        loadCard(currentIndex);
+        if(dataset.length > 0) loadCard(0);
     </script>
 </body>
 </html>
