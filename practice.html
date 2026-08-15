@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice - Korean Mastery Hub</title>
+    <title>Practice - Mastery Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
         :root {
             --primary: #52796f;
+            --primary-hover: #354f52;
             --bg: #2f3e46;
             --surface: #354f52;
             --border: #52796f;
@@ -14,44 +19,293 @@
             --text-light: #cad2c5;
             --radius: 16px;
         }
-        body { font-family: sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 500px; }
-        .back-link { color: var(--text-light); text-decoration: none; display: block; margin-bottom: 20px; }
-        
-        .flashcard-container { perspective: 1000px; width: 100%; height: 300px; cursor: pointer; }
-        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
-        .flashcard-container.flipped .card-inner { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .card-back { transform: rotateY(180deg); }
-        
-        .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
-        .btn { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .back-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: var(--text);
+        }
+
+        .controls {
+            background: var(--surface);
+            padding: 14px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        select, input[type="text"] {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            background-color: #2f3e46;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--text-light);
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            min-height: 280px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 280px;
+            text-align: center;
+            transform-style: preserve-3d;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 20px -4px rgb(0 0 0 / 0.25);
+        }
+
+        .flashcard.animating {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: var(--radius);
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .card-front {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #d8f3dc;
+        }
+
+        .example-box {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+            background: rgba(47, 62, 70, 0.6);
+            padding: 10px 14px;
+            border-radius: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid var(--border);
+            line-height: 1.4;
+        }
+
+        .input-section {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .input-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        @media (min-width: 480px) {
+            .input-row {
+                flex-direction: row;
+            }
+        }
+
+        button.action-btn, button.nav-btn, button.secondary-btn {
+            padding: 12px 18px;
+            border: none;
+            background-color: var(--primary);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            font-family: inherit;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        button.action-btn:hover, button.nav-btn:hover, button.secondary-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .secondary-btn {
+            background-color: #3e5c5d;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+        }
+
+        .secondary-btn:hover {
+            background-color: var(--primary-hover);
+            color: var(--text);
+        }
+
+        .feedback {
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-height: 20px;
+            text-align: center;
+        }
+
+        .feedback.correct {
+            color: #d8f3dc;
+        }
+
+        .feedback.incorrect {
+            color: #dda15e;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button.nav-btn {
+            flex: 1;
+            padding: 12px 10px;
+        }
+
+        .progress {
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            min-width: 90px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back-link">← Back to Hub</a>
-        <h2 id="topic-title">Loading...</h2>
 
-        <div class="flashcard-container" id="flashcard">
-            <div class="card-inner">
-                <div class="card-front">
-                    <h3 id="ko-text">-</h3>
-                </div>
-                <div class="card-back">
-                    <h3 id="en-text">-</h3>
-                    <p id="ex-text">-</p>
+    <div class="app-container">
+        <div class="top-nav">
+            <a href="index.html" class="back-link">← Choose Topic</a>
+            <h1 id="topicTitle" style="margin:0; font-size:1.1rem;">Practice Session</h1>
+            <div style="width: 70px;"></div>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="directionSelect">Practice Mode</label>
+                <select id="directionSelect" onchange="changeDirection()">
+                    <option value="ko-en">Korean ➔ English</option>
+                    <option value="en-ko">English ➔ Korean</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flashcard-container" onclick="flipCard()">
+            <div class="flashcard" id="card">
+                <div class="card-face card-front" id="cardFront">Loading...</div>
+                <div class="card-face card-back">
+                    <div id="cardBack">Loading...</div>
+                    <div class="example-box" id="cardExample">Example: ...</div>
                 </div>
             </div>
         </div>
 
-        <div class="controls">
-            <button id="prev-btn" class="btn">Previous</button>
-            <span id="counter">0 / 0</span>
-            <button id="next-btn" class="btn">Next</button>
+        <div class="input-section">
+            <label for="userAnswer">Active Recall Input (Type & Press Enter)</label>
+            <div class="input-row">
+                <input type="text" id="userAnswer" placeholder="Type target term..." onkeypress="handleKeyPress(event)">
+                <button class="action-btn" onclick="checkAnswer()" id="verifyBtn">Verify</button>
+                <button class="secondary-btn" onclick="revealAnswer()">Show Answer</button>
+            </div>
+            <div class="feedback" id="feedbackMessage"></div>
+        </div>
+
+        <div class="nav-container">
+            <button class="nav-btn" onclick="prevCard()">← Prev</button>
+            <div class="progress" id="progressIndicator">1 / 10</div>
+            <button class="nav-btn" onclick="nextCard()">Next →</button>
         </div>
     </div>
 
+    <!-- Load all data files -->
     <script src="data/summer.js"></script>
     <script src="data/mbti.js"></script>
     <script src="data/business.js"></script>
@@ -59,6 +313,7 @@
     <script src="data/jobhunting.js"></script>
 
     <script>
+        // Map URL parameter keys to datasets and display titles including all 5 topics
         const topicMap = {
             summer: { name: "Summer Vacation", data: typeof summerData !== 'undefined' ? summerData : [] },
             mbti: { name: "MBTI & Personality", data: typeof mbtiData !== 'undefined' ? mbtiData : [] },
@@ -69,27 +324,141 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const topicKey = urlParams.get('topic') || 'summer';
-        const currentTopic = topicMap[topicKey] || topicMap.summer;
         
-        document.getElementById('topic-title').innerText = currentTopic.name;
+        let currentCards = [];
         let currentIndex = 0;
-        const dataset = currentTopic.data;
-        const flashcard = document.getElementById('flashcard');
+        let isKoreanToEnglish = true;
+        let isAnsweredCorrectly = false;
 
-        function loadCard(index) {
-            const item = dataset[index];
-            document.getElementById('ko-text').innerText = item.ko;
-            document.getElementById('en-text').innerText = item.en;
-            document.getElementById('ex-text').innerText = item.ex;
-            document.getElementById('counter').innerText = `${index + 1} / ${dataset.length}`;
-            flashcard.classList.remove('flipped');
+        // Initialize session based on topic
+        function initSession() {
+            const topicInfo = topicMap[topicKey] || topicMap['summer'];
+            document.getElementById('topicTitle').textContent = topicInfo.name;
+            currentCards = shuffleArray(topicInfo.data);
+            currentIndex = 0;
+            updateCard();
         }
 
-        flashcard.addEventListener('click', () => flashcard.classList.toggle('flipped'));
-        document.getElementById('prev-btn').addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex - 1 + dataset.length) % dataset.length; loadCard(currentIndex); });
-        document.getElementById('next-btn').addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex + 1) % dataset.length; loadCard(currentIndex); });
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
 
-        if(dataset.length > 0) loadCard(0);
+        function updateCard() {
+            isAnsweredCorrectly = false;
+            if (currentCards.length === 0) return;
+            const cardData = currentCards[currentIndex];
+            const frontElem = document.getElementById('cardFront');
+            const backElem = document.getElementById('cardBack');
+            const exampleElem = document.getElementById('cardExample');
+            const cardElem = document.getElementById('card');
+            
+            cardElem.classList.remove('animating', 'flipped');
+            
+            document.getElementById('userAnswer').value = '';
+            document.getElementById('feedbackMessage').textContent = '';
+            document.getElementById('feedbackMessage').className = 'feedback';
+            document.getElementById('verifyBtn').textContent = 'Verify';
+
+            if (isKoreanToEnglish) {
+                frontElem.textContent = cardData.ko;
+                backElem.textContent = cardData.en;
+            } else {
+                frontElem.textContent = cardData.en;
+                backElem.textContent = cardData.ko;
+            }
+            
+            exampleElem.textContent = "Example: " + cardData.ex;
+            
+            document.getElementById('progressIndicator').textContent = 
+                `${currentIndex + 1} / ${currentCards.length}`;
+        }
+
+        function flipCard() {
+            const cardElem = document.getElementById('card');
+            cardElem.classList.add('animating');
+            cardElem.classList.toggle('flipped');
+        }
+
+        function revealAnswer() {
+            const cardElem = document.getElementById('card');
+            cardElem.classList.add('animating');
+            cardElem.classList.add('flipped');
+            isAnsweredCorrectly = true;
+            const feedbackElem = document.getElementById('feedbackMessage');
+            feedbackElem.textContent = "Answer revealed. Press Enter to go to next.";
+            feedbackElem.className = "feedback incorrect";
+            document.getElementById('verifyBtn').textContent = 'Next ➔';
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % currentCards.length;
+            updateCard();
+        }
+
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + currentCards.length) % currentCards.length;
+            updateCard();
+        }
+
+        function changeDirection() {
+            const select = document.getElementById('directionSelect');
+            isKoreanToEnglish = (select.value === 'ko-en');
+            updateCard();
+        }
+
+        function checkAnswer() {
+            if (isAnsweredCorrectly) {
+                nextCard();
+                return;
+            }
+
+            const userInputValue = document.getElementById('userAnswer').value.trim().toLowerCase();
+            if (!userInputValue) return;
+
+            const cardData = currentCards[currentIndex];
+            let targetAnswer = isKoreanToEnglish ? cardData.en : cardData.ko;
+            
+            let targets = targetAnswer.toLowerCase().split('/').map(t => t.trim());
+            targets = targets.flatMap(t => {
+                let clean = t.replace(/\s*\(.*?\)\s*/g, '').trim();
+                return [t, clean];
+            });
+
+            const feedbackElem = document.getElementById('feedbackMessage');
+            const isCorrect = targets.some(t => userInputValue === t || (t.length > 3 && userInputValue.includes(t)));
+
+            if (isCorrect) {
+                isAnsweredCorrectly = true;
+                feedbackElem.textContent = "Correct! Press Enter again or click Next ➔";
+                feedbackElem.className = "feedback correct";
+                const cardElem = document.getElementById('card');
+                cardElem.classList.add('animating');
+                cardElem.classList.add('flipped');
+                document.getElementById('verifyBtn').textContent = 'Next ➔';
+            } else {
+                feedbackElem.textContent = "Incorrect. Try again, or use 'Show Answer'.";
+                feedbackElem.className = "feedback incorrect";
+                document.getElementById('userAnswer').value = '';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                if (isAnsweredCorrectly) {
+                    nextCard();
+                } else {
+                    checkAnswer();
+                }
+            }
+        }
+
+        // Run on load
+        initSession();
     </script>
 </body>
 </html>
