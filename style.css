@@ -1,4 +1,45 @@
-/* --- Fix Back Link Visibility --- */
+:root {
+    --primary: #52796f;
+    --primary-hover: #354f52;
+    --surface-hover: #3e5c5d;
+    --bg: #2f3e46;
+    --surface: #354f52;
+    --border: #52796f;
+    --text: #fefae0;
+    --text-light: #cad2c5;
+    --radius: 16px;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 550px;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+}
+
+/* --- Back Link Visibility --- */
 .back-link {
     color: var(--text-light) !important;
     text-decoration: none;
@@ -11,7 +52,7 @@
     color: var(--text) !important;
 }
 
-/* --- Fix Flashcard 3D Layout & Stacking --- */
+/* --- Flashcard 3D Layout & Stacking --- */
 .flashcard-container {
     perspective: 1000px;
     width: 100%;
@@ -53,6 +94,160 @@
     box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.3);
 }
 
+.card-front {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+}
+
 .card-back {
     transform: rotateY(180deg);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #d8f3dc;
+}
+
+.example-box {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-style: italic;
+    background: rgba(47, 62, 70, 0.6);
+    padding: 10px 14px;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    line-height: 1.4;
+}
+
+.controls, .input-section {
+    background: var(--surface);
+    padding: 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+select, input[type="text"] {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 1rem;
+    background-color: #2f3e46;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+select:focus, input:focus {
+    border-color: var(--text-light);
+}
+
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+@media (min-width: 480px) {
+    .input-row {
+        flex-ion: row;
+        flex-direction: row;
+    }
+}
+
+button.action-btn, button.nav-btn, button.secondary-btn {
+    padding: 12px 18px;
+    border: none;
+    background-color: var(--primary);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    font-family: inherit;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+button.action-btn:hover, button.nav-btn:hover, button.secondary-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.secondary-btn {
+    background-color: #3e5c5d;
+    border: 1px solid var(--border);
+    color: var(--text-light);
+}
+
+.secondary-btn:hover {
+    background-color: var(--primary-hover);
+    color: var(--text);
+}
+
+.feedback {
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-height: 20px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.feedback.correct {
+    color: #d8f3dc;
+}
+
+.feedback.incorrect {
+    color: #dda15e;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+button.nav-btn {
+    flex: 1;
+    padding: 12px 10px;
+}
+
+.progress {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    min-width: 90px;
+}
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
 }
