@@ -1,103 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mastery Hub - Korean Flashcards</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .topic-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .topic-card {
-            background: var(--surface);
-            padding: 20px;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-decoration: none;
-            color: var(--text);
-            transition: transform 0.2s, background-color 0.2s;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        }
-
-        .topic-card:hover {
-            background-color: var(--surface-hover);
-            transform: translateY(-2px);
-        }
-
-        .topic-info h3 {
-            margin: 0 0 4px 0;
-            font-size: 1.1rem;
-        }
-
-        .topic-info p {
-            margin: 0;
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        .topic-action {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text);
-            background: var(--primary);
-            padding: 8px 14px;
-            border-radius: 8px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastery Hub · Korean</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Additional styles for the new layout */
+    .topic-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .topic-pill {
+      background: var(--surface);
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: 0.2s;
+      color: var(--text-light);
+      letter-spacing: 0.01em;
+    }
+    .topic-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(82, 121, 111, 0.3);
+    }
+    .topic-pill:hover { 
+      background: var(--primary-hover); 
+      color: #fff; 
+    }
+  </style>
 </head>
 <body>
+<div class="app-container" id="app">
+  <h1>🇰🇷 Mastery Hub</h1>
+  <div class="subtitle">choose a topic · active recall</div>
 
-    <div class="app-container">
-        <h1>Korean Mastery Hub</h1>
-        <div class="subtitle">Select a topic to start your active recall session</div>
+  <!-- topic pills -->
+  <div class="topic-bar" id="topicBar">
+    <span class="topic-pill active" data-topic="summer">☀️ Summer</span>
+    <span class="topic-pill" data-topic="mbti">🧠 MBTI</span>
+    <span class="topic-pill" data-topic="business">📊 Business</span>
+    <span class="topic-pill" data-topic="emotions">❤️ Emotions</span>
+    <span class="topic-pill" data-topic="jobhunting">💼 Job Hunt</span>
+  </div>
 
-        <div class="topic-grid">
-            <a href="practice.html?topic=summer" class="topic-card">
-                <div class="topic-info">
-                    <h3>Summer Vacation</h3>
-                </div>
-                <div class="topic-action">Practice →</div>
-            </a>
-
-            <a href="practice.html?topic=mbti" class="topic-card">
-                <div class="topic-info">
-                    <h3>MBTI & Personality</h3>
-                </div>
-                <div class="topic-action">Practice →</div>
-            </a>
-
-            <a href="practice.html?topic=business" class="topic-card">
-                <div class="topic-info">
-                    <h3>Business & Strategy</h3>
-                </div>
-                <div class="topic-action">Practice →</div>
-            </a>
-
-            <a href="practice.html?topic=emotions" class="topic-card">
-                <div class="topic-info">
-                    <h3>Emotions & Feelings</h3>
-                </div>
-                <div class="topic-action">Practice →</div>
-            </a>
-
-            <a href="practice.html?topic=jobhunting" class="topic-card">
-                <div class="topic-info">
-                    <h3>Job Hunting & Interviews</h3>
-                </div>
-                <div class="topic-action">Practice →</div>
-            </a>
-        </div>
+  <!-- flashcard -->
+  <div class="flashcard-container" id="card3d">
+    <div class="card-inner">
+      <div class="card-front" id="cardFront">여름</div>
+      <div class="card-back">
+        <div id="cardBack">summer</div>
+        <div class="example-box" id="cardExample">Example: 더운 여름</div>
+      </div>
     </div>
+  </div>
 
+  <!-- controls -->
+  <div class="controls">
+    <div class="control-group">
+      <label for="directionSelect">Practice Mode</label>
+      <select id="directionSelect">
+        <option value="ko-en">🇰🇷 → 🇬🇧</option>
+        <option value="en-ko">🇬🇧 → 🇰🇷</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="input-section">
+    <label for="userAnswer">Active Recall Input</label>
+    <div class="input-row">
+      <input type="text" id="userAnswer" placeholder="Type answer…" autocomplete="off">
+      <button class="action-btn" id="actionBtn">Verify</button>
+      <button class="secondary-btn" id="showBtn">Show</button>
+    </div>
+    <div class="feedback" id="feedbackMessage"></div>
+  </div>
+
+  <!-- navigation -->
+  <div class="nav-container">
+    <button class="nav-btn" id="prevBtn">← Prev</button>
+    <div class="progress" id="progressIndicator">1 / 10</div>
+    <button class="nav-btn" id="nextBtn">Next →</button>
+  </div>
+</div>
+
+<!-- Load all data files -->
+<script src="data/summer.js"></script>
+<script src="data/mbti.js"></script>
+<script src="data/business.js"></script>
+<script src="data/emotions.js"></script>
+<script src="data/jobhunting.js"></script>
+
+<script>
+  // Map topic keys to their data (loaded from separate files)
+  const topicMap = {
+    summer: { name: 'Summer', data: typeof summerData !== 'undefined' ? summerData : [] },
+    mbti: { name: 'MBTI', data: typeof mbtiData !== 'undefined' ? mbtiData : [] },
+    business: { name: 'Business', data: typeof businessData !== 'undefined' ? businessData : [] },
+    emotions: { name: 'Emotions', data: typeof emotionsData !== 'undefined' ? emotionsData : [] },
+    jobhunting: { name: 'Job Hunt', data: typeof jobhuntingData !== 'undefined' ? jobhuntingData : [] }
+  };
+
+  // -------- STATE -------------------------------------------------
+  let currentTopic = 'summer';
+  let cards = [];
+  let currentIndex = 0;
+  let direction = 'ko-en';
+  let isFlipped = false;
+  let answeredCorrect = false;
+
+  // DOM refs
+  const card3d = document.getElementById('card3d');
+  const frontEl = document.getElementById('cardFront');
+  const backEl = document.getElementById('cardBack');
+  const exampleEl = document.getElementById('cardExample');
+  const progressEl = document.getElementById('progressIndicator');
+  const feedbackEl = document.getElementById('feedbackMessage');
+  const actionBtn = document.getElementById('actionBtn');
+  const showBtn = document.getElementById('showBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const userInput = document.getElementById('userAnswer');
+  const directionSelect = document.getElementById('directionSelect');
+  const topicPills = document.querySelectorAll('.topic-pill');
+
+  // -------- HELPERS -----------------------------------------------
+  function shuffleArray(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function setActiveTopic(topicKey) {
+    topicPills.forEach(p => {
+      p.classList.toggle('active', p.dataset.topic === topicKey);
+    });
+  }
+
+  // -------- RENDER CARD -------------------------------------------
+  function renderCard() {
+    if (!cards.length) {
+      frontEl.textContent = 'No data';
+      backEl.textContent = 'No data';
+      exampleEl.textContent = '✧ No examples';
+      progressEl.textContent = '0 / 0';
+      return;
+    }
+    const card = cards[currentIndex];
+    const isKoEn = direction === 'ko-en';
+    frontEl.textContent = isKoEn ? card.ko : card.en;
+    backEl.textContent = isKoEn ? card.en : card.ko;
+    exampleEl.textContent = `✧ ${card.ex}`;
+    progressEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+    
+    // Reset flip and feedback
+    if (card3d.classList.contains('flipped')) {
+      card3d.classList.remove('flipped');
+    }
+    isFlipped = false;
+    answeredCorrect = false;
+    userInput.value = '';
+    feedbackEl.textContent = '';
+    feedbackEl.className = 'feedback';
+    actionBtn.textContent = 'Verify';
+    userInput.focus();
+  }
+
+  // -------- LOAD TOPIC --------------------------------------------
+  function loadTopic(topicKey) {
+    const topic = topicMap[topicKey];
+    if (!topic || !topic.data.length) {
+      console.warn(`Topic "${topicKey}" not found or empty`);
+      return;
+    }
+    currentTopic = topicKey;
+    cards = shuffleArray(topic.data);
+    currentIndex = 0;
+    setActiveTopic(topicKey);
+    renderCard();
+  }
+
+  // -------- NAVIGATION --------------------------------------------
+  function goNext() {
+    if (!cards.length) return;
+    currentIndex = (currentIndex + 1) % cards.length;
+    renderCard();
+  }
+
+  function goPrev() {
+    if (!cards.length) return;
+    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+    renderCard();
+  }
+
+  // -------- FLIP --------------------------------------------------
+  function flipCard() {
+    if (!cards.length) return;
+    card3d.classList.toggle('flipped');
+    isFlipped = !isFlipped;
+    if (isFlipped) {
+      answeredCorrect = true;
+      actionBtn.textContent = 'Next ➔';
+      feedbackEl.textContent = 'Answer revealed. Press Next or Enter.';
+      feedbackEl.className = 'feedback incorrect';
+    }
+  }
+
+  // -------- CHECK ANSWER ------------------------------------------
+  function handleVerify() {
+    if (!cards.length) return;
+    if (answeredCorrect || isFlipped) {
+      goNext();
+      return;
+    }
+    const raw = userInput.value.trim();
+    if (!raw) {
+      feedbackEl.textContent = '✏️ Type an answer first.';
+      feedbackEl.className = 'feedback incorrect';
+      return;
+    }
+    const card = cards[currentIndex];
+    const target = direction === 'ko-en' ? card.en : card.ko;
+    const variants = target.split('/').map(s => s.trim().toLowerCase());
+    const cleanVariants = variants.flatMap(v => {
+      const clean = v.replace(/\s*\(.*?\)\s*/g, '').trim();
+      return [v, clean];
+    });
+    const inputLower = raw.toLowerCase();
+    const isCorrect = cleanVariants.some(v => 
+      inputLower === v || (v.length > 2 && inputLower.includes(v))
+    );
+
+    if (isCorrect) {
+      answeredCorrect = true;
+      feedbackEl.textContent = '✅ Correct! Press Next or Enter.';
+      feedbackEl.className = 'feedback correct';
+      actionBtn.textContent = 'Next ➔';
+      if (!isFlipped) {
+        card3d.classList.add('flipped');
+        isFlipped = true;
+      }
+    } else {
+      feedbackEl.textContent = '❌ Incorrect. Try again or use "Show".';
+      feedbackEl.className = 'feedback incorrect';
+      userInput.value = '';
+      userInput.focus();
+    }
+  }
+
+  // -------- SHOW ANSWER -------------------------------------------
+  function handleShow() {
+    if (!cards.length) return;
+    if (!isFlipped) {
+      card3d.classList.add('flipped');
+      isFlipped = true;
+    }
+    answeredCorrect = true;
+    actionBtn.textContent = 'Next ➔';
+    feedbackEl.textContent = '👀 Answer shown. Press Next or Enter.';
+    feedbackEl.className = 'feedback incorrect';
+  }
+
+  // -------- DIRECTION CHANGE --------------------------------------
+  function changeDirection() {
+    direction = directionSelect.value;
+    renderCard();
+  }
+
+  // -------- KEYBOARD ----------------------------------------------
+  function onInputKey(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (answeredCorrect || isFlipped) {
+        goNext();
+      } else {
+        handleVerify();
+      }
+    }
+  }
+
+  // -------- INIT --------------------------------------------------
+  function init() {
+    // Check if data loaded properly
+    console.log('Data loaded:', {
+      summer: summerData?.length || 0,
+      mbti: mbtiData?.length || 0,
+      business: businessData?.length || 0,
+      emotions: emotionsData?.length || 0,
+      jobhunting: jobhuntingData?.length || 0
+    });
+
+    loadTopic('summer');
+    
+    // Event listeners
+    topicPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const topic = pill.dataset.topic;
+        if (topic !== currentTopic) {
+          loadTopic(topic);
+        }
+      });
+    });
+    
+    directionSelect.addEventListener('change', changeDirection);
+    actionBtn.addEventListener('click', handleVerify);
+    showBtn.addEventListener('click', handleShow);
+    prevBtn.addEventListener('click', goPrev);
+    nextBtn.addEventListener('click', goNext);
+    
+    card3d.addEventListener('click', (e) => {
+      if (e.target.closest('.action-btn') || e.target.closest('.secondary-btn') || e.target.closest('input')) return;
+      if (!cards.length) return;
+      if (!isFlipped) {
+        handleShow();
+      }
+    });
+    
+    userInput.addEventListener('keydown', onInputKey);
+  }
+
+  // Wait for DOM and data to load
+  document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
