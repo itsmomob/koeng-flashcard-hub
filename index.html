@@ -27,6 +27,7 @@
       transition: 0.2s;
       color: var(--text-light);
       letter-spacing: 0.01em;
+      user-select: none;
     }
     .topic-pill.active {
       background: var(--primary);
@@ -47,7 +48,10 @@
 
   <!-- topic pills -->
   <div class="topic-bar" id="topicBar">
-    <span class="topic-pill active" data-topic="summer">☀️ Summer</span>
+    <span class="topic-pill" data-topic="topik1">📘 TOPIK 1</span>
+    <span class="topic-pill" data-topic="topik2">📗 TOPIK 2</span>
+    <span class="topic-pill active" data-topic="topik3">📕 TOPIK 3</span>
+    <span class="topic-pill" data-topic="summer">☀️ Summer</span>
     <span class="topic-pill" data-topic="mbti">🧠 MBTI</span>
     <span class="topic-pill" data-topic="business">📊 Business</span>
     <span class="topic-pill" data-topic="emotions">❤️ Emotions</span>
@@ -100,6 +104,9 @@
 <script src="data/business.js"></script>
 <script src="data/emotions.js"></script>
 <script src="data/jobhunting.js"></script>
+<script src="data/topik1.js"></script>
+<script src="data/topik2.js"></script>
+<script src="data/topik3.js"></script>
 
 <script>
   // Map topic keys to their data (loaded from separate files)
@@ -108,11 +115,14 @@
     mbti: { name: 'MBTI', data: typeof mbtiData !== 'undefined' ? mbtiData : [] },
     business: { name: 'Business', data: typeof businessData !== 'undefined' ? businessData : [] },
     emotions: { name: 'Emotions', data: typeof emotionsData !== 'undefined' ? emotionsData : [] },
-    jobhunting: { name: 'Job Hunt', data: typeof jobhuntingData !== 'undefined' ? jobhuntingData : [] }
+    jobhunting: { name: 'Job Hunt', data: typeof jobhuntingData !== 'undefined' ? jobhuntingData : [] },
+    topik1: { name: 'TOPIK 1', data: typeof topik1Data !== 'undefined' ? topik1Data : [] },
+    topik2: { name: 'TOPIK 2', data: typeof topik2Data !== 'undefined' ? topik2Data : [] },
+    topik3: { name: 'TOPIK 3', data: typeof topik3Data !== 'undefined' ? topik3Data : [] }
   };
 
   // -------- STATE -------------------------------------------------
-  let currentTopic = 'summer';
+  let currentTopic = 'topik3';
   let cards = [];
   let currentIndex = 0;
   let direction = 'ko-en';
@@ -296,14 +306,17 @@
   function init() {
     // Check if data loaded properly
     console.log('Data loaded:', {
-      summer: summerData?.length || 0,
-      mbti: mbtiData?.length || 0,
-      business: businessData?.length || 0,
-      emotions: emotionsData?.length || 0,
-      jobhunting: jobhuntingData?.length || 0
+      summer: typeof summerData !== 'undefined' ? summerData.length : 0,
+      mbti: typeof mbtiData !== 'undefined' ? mbtiData.length : 0,
+      business: typeof businessData !== 'undefined' ? businessData.length : 0,
+      emotions: typeof emotionsData !== 'undefined' ? emotionsData.length : 0,
+      jobhunting: typeof jobhuntingData !== 'undefined' ? jobhuntingData.length : 0,
+      topik1: typeof topik1Data !== 'undefined' ? topik1Data.length : 0,
+      topik2: typeof topik2Data !== 'undefined' ? topik2Data.length : 0,
+      topik3: typeof topik3Data !== 'undefined' ? topik3Data.length : 0
     });
 
-    loadTopic('summer');
+    loadTopic('topik3');
     
     // Event listeners
     topicPills.forEach(pill => {
