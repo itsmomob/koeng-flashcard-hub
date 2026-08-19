@@ -160,26 +160,52 @@
     });
   }
 
-  // -------- RENDER CARD -------------------------------------------
-  function renderCard() {
+ // -------- RENDER CARD -------------------------------------------
+function renderCard() {
     if (!cards.length) {
-      frontEl.textContent = 'No data';
-      backEl.textContent = 'No data';
-      exampleEl.textContent = '✧ No examples';
-      progressEl.textContent = '0 / 0';
-      return;
+        frontEl.textContent = 'No data';
+        backEl.textContent = 'No data';
+        exampleEl.textContent = '✧ No examples';
+        progressEl.textContent = '0 / 0';
+        return;
     }
+
+    // Get the card data
     const card = cards[currentIndex];
     const isKoEn = direction === 'ko-en';
+    
+    // Check if the card is currently flipped
+    const isCurrentlyFlipped = card3d.classList.contains('flipped');
+    
+    if (isCurrentlyFlipped) {
+        // If flipped, unflip first, then update content after animation
+        card3d.classList.remove('flipped');
+        isFlipped = false;
+        answeredCorrect = false;
+        
+        // Wait for the flip animation to complete (0.6s) before updating content
+        setTimeout(() => {
+            updateCardContent(card, isKoEn);
+            // Reset input and feedback after content updates
+            resetUI();
+        }, 600); // Match this to your CSS transition duration (0.6s)
+    } else {
+        // If not flipped, update content immediately
+        updateCardContent(card, isKoEn);
+        resetUI();
+    }
+}
+
+// Helper function to update card content
+function updateCardContent(card, isKoEn) {
     frontEl.textContent = isKoEn ? card.ko : card.en;
     backEl.textContent = isKoEn ? card.en : card.ko;
     exampleEl.textContent = `✧ ${card.ex}`;
     progressEl.textContent = `${currentIndex + 1} / ${cards.length}`;
-    
-    // Reset flip and feedback
-    if (card3d.classList.contains('flipped')) {
-      card3d.classList.remove('flipped');
-    }
+}
+
+// Helper function to reset UI state
+function resetUI() {
     isFlipped = false;
     answeredCorrect = false;
     userInput.value = '';
@@ -187,166 +213,4 @@
     feedbackEl.className = 'feedback';
     actionBtn.textContent = 'Verify';
     userInput.focus();
-  }
-
-  // -------- LOAD TOPIC --------------------------------------------
-  function loadTopic(topicKey) {
-    const topic = topicMap[topicKey];
-    if (!topic || !topic.data.length) {
-      console.warn(`Topic "${topicKey}" not found or empty`);
-      return;
-    }
-    currentTopic = topicKey;
-    cards = shuffleArray(topic.data);
-    currentIndex = 0;
-    setActiveTopic(topicKey);
-    renderCard();
-  }
-
-  // -------- NAVIGATION --------------------------------------------
-  function goNext() {
-    if (!cards.length) return;
-    currentIndex = (currentIndex + 1) % cards.length;
-    renderCard();
-  }
-
-  function goPrev() {
-    if (!cards.length) return;
-    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-    renderCard();
-  }
-
-  // -------- FLIP --------------------------------------------------
-  function flipCard() {
-    if (!cards.length) return;
-    card3d.classList.toggle('flipped');
-    isFlipped = !isFlipped;
-    if (isFlipped) {
-      answeredCorrect = true;
-      actionBtn.textContent = 'Next ➔';
-      feedbackEl.textContent = 'Answer revealed. Press Next or Enter.';
-      feedbackEl.className = 'feedback incorrect';
-    }
-  }
-
-  // -------- CHECK ANSWER ------------------------------------------
-  function handleVerify() {
-    if (!cards.length) return;
-    if (answeredCorrect || isFlipped) {
-      goNext();
-      return;
-    }
-    const raw = userInput.value.trim();
-    if (!raw) {
-      feedbackEl.textContent = '✏️ Type an answer first.';
-      feedbackEl.className = 'feedback incorrect';
-      return;
-    }
-    const card = cards[currentIndex];
-    const target = direction === 'ko-en' ? card.en : card.ko;
-    const variants = target.split('/').map(s => s.trim().toLowerCase());
-    const cleanVariants = variants.flatMap(v => {
-      const clean = v.replace(/\s*\(.*?\)\s*/g, '').trim();
-      return [v, clean];
-    });
-    const inputLower = raw.toLowerCase();
-    const isCorrect = cleanVariants.some(v => 
-      inputLower === v || (v.length > 2 && inputLower.includes(v))
-    );
-
-    if (isCorrect) {
-      answeredCorrect = true;
-      feedbackEl.textContent = '✅ Correct! Press Next or Enter.';
-      feedbackEl.className = 'feedback correct';
-      actionBtn.textContent = 'Next ➔';
-      if (!isFlipped) {
-        card3d.classList.add('flipped');
-        isFlipped = true;
-      }
-    } else {
-      feedbackEl.textContent = '❌ Incorrect. Try again or use "Show".';
-      feedbackEl.className = 'feedback incorrect';
-      userInput.value = '';
-      userInput.focus();
-    }
-  }
-
-  // -------- SHOW ANSWER -------------------------------------------
-  function handleShow() {
-    if (!cards.length) return;
-    if (!isFlipped) {
-      card3d.classList.add('flipped');
-      isFlipped = true;
-    }
-    answeredCorrect = true;
-    actionBtn.textContent = 'Next ➔';
-    feedbackEl.textContent = '👀 Answer shown. Press Next or Enter.';
-    feedbackEl.className = 'feedback incorrect';
-  }
-
-  // -------- DIRECTION CHANGE --------------------------------------
-  function changeDirection() {
-    direction = directionSelect.value;
-    renderCard();
-  }
-
-  // -------- KEYBOARD ----------------------------------------------
-  function onInputKey(e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (answeredCorrect || isFlipped) {
-        goNext();
-      } else {
-        handleVerify();
-      }
-    }
-  }
-
-  // -------- INIT --------------------------------------------------
-  function init() {
-    // Check if data loaded properly
-    console.log('Data loaded:', {
-      summer: typeof summerData !== 'undefined' ? summerData.length : 0,
-      mbti: typeof mbtiData !== 'undefined' ? mbtiData.length : 0,
-      business: typeof businessData !== 'undefined' ? businessData.length : 0,
-      emotions: typeof emotionsData !== 'undefined' ? emotionsData.length : 0,
-      jobhunting: typeof jobhuntingData !== 'undefined' ? jobhuntingData.length : 0,
-      topik1: typeof topik1Data !== 'undefined' ? topik1Data.length : 0,
-      topik2: typeof topik2Data !== 'undefined' ? topik2Data.length : 0,
-      topik3: typeof topik3Data !== 'undefined' ? topik3Data.length : 0
-    });
-
-    loadTopic('topik3');
-    
-    // Event listeners
-    topicPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        const topic = pill.dataset.topic;
-        if (topic !== currentTopic) {
-          loadTopic(topic);
-        }
-      });
-    });
-    
-    directionSelect.addEventListener('change', changeDirection);
-    actionBtn.addEventListener('click', handleVerify);
-    showBtn.addEventListener('click', handleShow);
-    prevBtn.addEventListener('click', goPrev);
-    nextBtn.addEventListener('click', goNext);
-    
-    card3d.addEventListener('click', (e) => {
-      if (e.target.closest('.action-btn') || e.target.closest('.secondary-btn') || e.target.closest('input')) return;
-      if (!cards.length) return;
-      if (!isFlipped) {
-        handleShow();
-      }
-    });
-    
-    userInput.addEventListener('keydown', onInputKey);
-  }
-
-  // Wait for DOM and data to load
-  document.addEventListener('DOMContentLoaded', init);
-</script>
-</body>
-</html>
+}
