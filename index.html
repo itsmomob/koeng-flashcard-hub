@@ -39,6 +39,231 @@
       background: var(--primary-hover); 
       color: #fff; 
     }
+
+    /* Simplified card - no 3D flip */
+    .flashcard-container {
+      width: 100%;
+      min-height: 280px;
+      margin-bottom: 20px;
+      cursor: default;
+    }
+
+    .card-display {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 30px;
+      box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.3);
+      text-align: center;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-front-text {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .card-back-text {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #d8f3dc;
+      margin-top: 8px;
+    }
+
+    .card-back-text.hidden {
+      display: none;
+    }
+
+    .example-box {
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-style: italic;
+      background: rgba(47, 62, 70, 0.6);
+      padding: 10px 14px;
+      border-radius: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--border);
+      line-height: 1.4;
+    }
+
+    .reveal-btn {
+      margin-top: 16px;
+      padding: 10px 24px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-family: inherit;
+    }
+
+    .reveal-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .reveal-btn.revealed {
+      background: #3e5c5d;
+      border: 1px solid var(--border);
+      color: var(--text-light);
+    }
+
+    .reveal-btn.revealed:hover {
+      background: var(--primary-hover);
+      color: var(--text);
+    }
+
+    /* Rest of the styles remain the same */
+    .controls, .input-section {
+      background: var(--surface);
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    select, input[type="text"] {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      background-color: #2f3e46;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--text-light);
+    }
+
+    .input-row {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .input-row input {
+      flex: 2;
+      min-width: 160px;
+    }
+
+    button.action-btn, button.nav-btn, button.secondary-btn {
+      padding: 12px 18px;
+      border: none;
+      background-color: var(--primary);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      font-family: inherit;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    button.action-btn:hover, button.nav-btn:hover, button.secondary-btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      background-color: #3e5c5d;
+      border: 1px solid var(--border);
+      color: var(--text-light);
+    }
+
+    .secondary-btn:hover {
+      background-color: var(--primary-hover);
+      color: var(--text);
+    }
+
+    .feedback {
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-height: 24px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .feedback.correct {
+      color: #b7e4c7;
+    }
+
+    .feedback.incorrect {
+      color: #f4a261;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    button.nav-btn {
+      flex: 1;
+      padding: 12px 10px;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-light);
+    }
+
+    button.nav-btn:hover {
+      background-color: var(--primary-hover);
+      color: var(--text);
+    }
+
+    .progress {
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      min-width: 90px;
+    }
+
+    @media (max-width: 480px) {
+      .card-front-text { font-size: 1.6rem; }
+      .card-back-text { font-size: 1.3rem; }
+      .flashcard-container { min-height: 220px; }
+      .card-display { padding: 30px 20px; min-height: 160px; }
+    }
   </style>
 </head>
 <body>
@@ -58,14 +283,13 @@
     <span class="topic-pill" data-topic="jobhunting">💼 Job Hunt</span>
   </div>
 
-  <!-- flashcard -->
-  <div class="flashcard-container" id="card3d">
-    <div class="card-inner">
-      <div class="card-front" id="cardFront">여름</div>
-      <div class="card-back">
-        <div id="cardBack">summer</div>
-        <div class="example-box" id="cardExample">Example: 더운 여름</div>
-      </div>
+  <!-- flashcard - no flip -->
+  <div class="flashcard-container">
+    <div class="card-display">
+      <div class="card-front-text" id="cardFront">Loading...</div>
+      <div class="card-back-text hidden" id="cardBack">Answer</div>
+      <div class="example-box" id="cardExample">Example: ...</div>
+      <button class="reveal-btn" id="revealBtn">Show Answer</button>
     </div>
   </div>
 
@@ -109,7 +333,7 @@
 <script src="data/topik3.js"></script>
 
 <script>
-  // Map topic keys to their data (loaded from separate files)
+  // Map topic keys to their data
   const topicMap = {
     summer: { name: 'Summer', data: typeof summerData !== 'undefined' ? summerData : [] },
     mbti: { name: 'MBTI', data: typeof mbtiData !== 'undefined' ? mbtiData : [] },
@@ -126,14 +350,13 @@
   let cards = [];
   let currentIndex = 0;
   let direction = 'ko-en';
-  let isFlipped = false;
-  let answeredCorrect = false;
+  let answerRevealed = false;  // Track if answer is shown
 
   // DOM refs
-  const card3d = document.getElementById('card3d');
   const frontEl = document.getElementById('cardFront');
   const backEl = document.getElementById('cardBack');
   const exampleEl = document.getElementById('cardExample');
+  const revealBtn = document.getElementById('revealBtn');
   const progressEl = document.getElementById('progressIndicator');
   const feedbackEl = document.getElementById('feedbackMessage');
   const actionBtn = document.getElementById('actionBtn');
@@ -160,57 +383,185 @@
     });
   }
 
- // -------- RENDER CARD -------------------------------------------
-function renderCard() {
+  function hideAnswer() {
+    backEl.classList.add('hidden');
+    answerRevealed = false;
+    revealBtn.textContent = 'Show Answer';
+    revealBtn.classList.remove('revealed');
+    actionBtn.textContent = 'Verify';
+  }
+
+  function showAnswer() {
+    backEl.classList.remove('hidden');
+    answerRevealed = true;
+    revealBtn.textContent = 'Hide Answer';
+    revealBtn.classList.add('revealed');
+    actionBtn.textContent = 'Next ➔';
+  }
+
+  // -------- RENDER CARD -------------------------------------------
+  function renderCard() {
     if (!cards.length) {
-        frontEl.textContent = 'No data';
-        backEl.textContent = 'No data';
-        exampleEl.textContent = '✧ No examples';
-        progressEl.textContent = '0 / 0';
-        return;
+      frontEl.textContent = 'No data';
+      backEl.textContent = 'No data';
+      exampleEl.textContent = '✧ No examples';
+      progressEl.textContent = '0 / 0';
+      return;
     }
 
-    // Get the card data
     const card = cards[currentIndex];
     const isKoEn = direction === 'ko-en';
     
-    // Check if the card is currently flipped
-    const isCurrentlyFlipped = card3d.classList.contains('flipped');
-    
-    if (isCurrentlyFlipped) {
-        // If flipped, unflip first, then update content after animation
-        card3d.classList.remove('flipped');
-        isFlipped = false;
-        answeredCorrect = false;
-        
-        // Wait for the flip animation to complete (0.6s) before updating content
-        setTimeout(() => {
-            updateCardContent(card, isKoEn);
-            // Reset input and feedback after content updates
-            resetUI();
-        }, 600); // Match this to your CSS transition duration (0.6s)
-    } else {
-        // If not flipped, update content immediately
-        updateCardContent(card, isKoEn);
-        resetUI();
-    }
-}
-
-// Helper function to update card content
-function updateCardContent(card, isKoEn) {
     frontEl.textContent = isKoEn ? card.ko : card.en;
     backEl.textContent = isKoEn ? card.en : card.ko;
     exampleEl.textContent = `✧ ${card.ex}`;
     progressEl.textContent = `${currentIndex + 1} / ${cards.length}`;
-}
-
-// Helper function to reset UI state
-function resetUI() {
-    isFlipped = false;
-    answeredCorrect = false;
+    
+    // Reset UI
+    hideAnswer();
     userInput.value = '';
     feedbackEl.textContent = '';
     feedbackEl.className = 'feedback';
-    actionBtn.textContent = 'Verify';
     userInput.focus();
-}
+  }
+
+  // -------- LOAD TOPIC --------------------------------------------
+  function loadTopic(topicKey) {
+    const topic = topicMap[topicKey];
+    if (!topic || !topic.data.length) {
+      console.warn(`Topic "${topicKey}" not found or empty`);
+      return;
+    }
+    currentTopic = topicKey;
+    cards = shuffleArray(topic.data);
+    currentIndex = 0;
+    setActiveTopic(topicKey);
+    renderCard();
+  }
+
+  // -------- NAVIGATION --------------------------------------------
+  function goNext() {
+    if (!cards.length) return;
+    currentIndex = (currentIndex + 1) % cards.length;
+    renderCard();
+  }
+
+  function goPrev() {
+    if (!cards.length) return;
+    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+    renderCard();
+  }
+
+  // -------- TOGGLE ANSWER -----------------------------------------
+  function toggleAnswer() {
+    if (answerRevealed) {
+      hideAnswer();
+    } else {
+      showAnswer();
+      feedbackEl.textContent = '👀 Answer shown. Press Next or Enter.';
+      feedbackEl.className = 'feedback incorrect';
+    }
+  }
+
+  // -------- CHECK ANSWER ------------------------------------------
+  function handleVerify() {
+    if (!cards.length) return;
+    if (answerRevealed) {
+      goNext();
+      return;
+    }
+    const raw = userInput.value.trim();
+    if (!raw) {
+      feedbackEl.textContent = '✏️ Type an answer first.';
+      feedbackEl.className = 'feedback incorrect';
+      return;
+    }
+    const card = cards[currentIndex];
+    const target = direction === 'ko-en' ? card.en : card.ko;
+    const variants = target.split('/').map(s => s.trim().toLowerCase());
+    const cleanVariants = variants.flatMap(v => {
+      const clean = v.replace(/\s*\(.*?\)\s*/g, '').trim();
+      return [v, clean];
+    });
+    const inputLower = raw.toLowerCase();
+    const isCorrect = cleanVariants.some(v => 
+      inputLower === v || (v.length > 2 && inputLower.includes(v))
+    );
+
+    if (isCorrect) {
+      showAnswer();
+      feedbackEl.textContent = '✅ Correct! Press Next or Enter.';
+      feedbackEl.className = 'feedback correct';
+    } else {
+      feedbackEl.textContent = '❌ Incorrect. Try again or use "Show".';
+      feedbackEl.className = 'feedback incorrect';
+      userInput.value = '';
+      userInput.focus();
+    }
+  }
+
+  // -------- SHOW ANSWER (from button) -----------------------------
+  function handleShow() {
+    if (!cards.length) return;
+    showAnswer();
+    feedbackEl.textContent = '👀 Answer shown. Press Next or Enter.';
+    feedbackEl.className = 'feedback incorrect';
+  }
+
+  // -------- DIRECTION CHANGE --------------------------------------
+  function changeDirection() {
+    direction = directionSelect.value;
+    hideAnswer();
+    renderCard();
+  }
+
+  // -------- KEYBOARD ----------------------------------------------
+  function onInputKey(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (answerRevealed) {
+        goNext();
+      } else {
+        handleVerify();
+      }
+    }
+  }
+
+  // -------- INIT --------------------------------------------------
+  function init() {
+    console.log('Data loaded:', {
+      summer: typeof summerData !== 'undefined' ? summerData.length : 0,
+      mbti: typeof mbtiData !== 'undefined' ? mbtiData.length : 0,
+      business: typeof businessData !== 'undefined' ? businessData.length : 0,
+      emotions: typeof emotionsData !== 'undefined' ? emotionsData.length : 0,
+      jobhunting: typeof jobhuntingData !== 'undefined' ? jobhuntingData.length : 0,
+      topik1: typeof topik1Data !== 'undefined' ? topik1Data.length : 0,
+      topik2: typeof topik2Data !== 'undefined' ? topik2Data.length : 0,
+      topik3: typeof topik3Data !== 'undefined' ? topik3Data.length : 0
+    });
+
+    loadTopic('topik3');
+    
+    // Event listeners
+    topicPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const topic = pill.dataset.topic;
+        if (topic !== currentTopic) {
+          loadTopic(topic);
+        }
+      });
+    });
+    
+    directionSelect.addEventListener('change', changeDirection);
+    actionBtn.addEventListener('click', handleVerify);
+    showBtn.addEventListener('click', handleShow);
+    revealBtn.addEventListener('click', toggleAnswer);
+    prevBtn.addEventListener('click', goPrev);
+    nextBtn.addEventListener('click', goNext);
+    userInput.addEventListener('keydown', onInputKey);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
